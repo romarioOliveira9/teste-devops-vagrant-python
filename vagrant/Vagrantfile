@@ -1,0 +1,23 @@
+Vagrant.configure("2") do |config|
+    
+    #Instalação do java e Apache Zeppelin
+    config.vm.provision "shell", path: "install-java-zeppelin.sh"
+  
+    #Instalação do Vagrant plugins
+    config.vagrant.plugins = ["vagrant-disksize"]
+    
+    #Acesso através da chave privada
+    config.ssh.private_key_path = "~/.ssh/id_rsa"
+    config.ssh.forward_agent = true
+
+    # Criação da VM
+      config.vm.define "teste-zeppelin" do |subconfig|
+        subconfig.vm.box = "centos/7"
+        subconfig.disksize.size = '50GB'
+        config.vm.provider :virtualbox do |spec|
+          spec.name = "teste-zeppelin"
+          spec.cpus = 2
+          spec.memory = 4096
+    end
+  end
+end
